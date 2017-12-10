@@ -33,6 +33,7 @@ void SearchDevice::searchDevices() {
 			for (int i = 0; i < nPortCount; i++)
 			{
 				ZP_GetPortInfo(hList, i, &rPI);
+
 				QString str;
 				str.append((WCHAR)rPI.nType);
 				str.append((WCHAR)rPI.szName);
@@ -43,7 +44,7 @@ void SearchDevice::searchDevices() {
 			}
 		}
 		catch (const std::exception& error) {
-
+			emit messageFromReader(error.what());
 		}
 
 		ZR_CloseHandle(hList);
@@ -52,10 +53,10 @@ void SearchDevice::searchDevices() {
 
 	}
 	catch (const std::exception& error) {
-
+		emit messageFromReader(error.what());
 	}
 }
 
-void SearchDevice::openConnection(QString device) {
+void SearchDevice::openConnection(QString device) { // Подключится к ридеру и слушать + отдавать сообщения
 	
 }

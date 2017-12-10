@@ -8,18 +8,16 @@ ReaderListlVisualSDK::ReaderListlVisualSDK(QWidget *parent)
 {	
 	ui.setupUi(this);
 	
-	
-	
 	t_searhDevice = static_cast<std::shared_ptr<QThread>>(new QThread());
 	SearchDevice *searchDevice = new SearchDevice(t_searhDevice);
 	searchDevice->moveToThread(&*t_searhDevice);
 
 	connect(ui.DeviceList, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(doubleClick(QListWidgetItem*)));
-	connect(searchDevice, SIGNAL(messageFromReader(QString)), this, SLOT(writeToEventList(QString)))
-	connect((QWidget*)ui.InputText, SIGNAL(doubleClicked()), this, SLOT(on_InputText_doubleclicked()));
+	connect(searchDevice, SIGNAL(messageFromReader(QString)), this, SLOT(writeToEventList(QString)));
+	connect(ui.InputText, SIGNAL(doubleClicked()), this, SLOT(on_InputText_doubleclicked()));
 	connect(this, SIGNAL(openConnection(QString)), searchDevice, SLOT(openConnection(QString)));
 
-	addList((*(new QStringList) << "hello"));
+	//addList((*(new QStringList) << "hello"));
 	t_searhDevice->start();
 
 }
@@ -42,4 +40,8 @@ void ReaderListlVisualSDK::on_InputText_doubleclicked() {
 	QClipboard* clipboard = QGuiApplication::clipboard();
 	QString originalText = clipboard->text();
 	clipboard->setText("hello");
+}
+
+void ReaderListlVisualSDK::writeToEvenList(QString message) {
+	ui.EventList->textCursor().insertText(message + '\r');
 }
