@@ -1,2 +1,14 @@
+#include <Qt>
+#include <QClipboard>
 #include <QtWidgets>
-#include <qdebug.h>
+#include <QWidget>
+#include <memory>
+#include <set>
+#include "ZReader.h"
+#include "ZPort.h"
+
+#if !defined(ZREADER_LINKONREQUEST)
+#pragma comment(lib, "ZReader.lib")
+#elif !defined(ZPORT_LINKONREQUEST)
+#pragma comment(lib, "ZReader.lib")
+#endif // !ZREADER_LINKONREQUEST

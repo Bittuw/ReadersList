@@ -12,12 +12,13 @@ extern LPCTSTR ReaderTypeStrs[9];
 extern LPCTSTR CardTypeStrs[18];
 
 BOOL CheckZRError(HRESULT nStatus, LPCTSTR pszContext);
-std::wstring ZKeyNumToStr(const Z_KEYNUM& rNum, ZR_CARD_TYPE nType);
+//std::wstring ZKeyNumToStr(const Z_KEYNUM& rNum, ZR_CARD_TYPE nType);
 
 class CZReaderLoader
 {
 public:
 	HRESULT m_nStatus;
+	
 public:
 	CZReaderLoader();
 	virtual ~CZReaderLoader();
