@@ -1,11 +1,15 @@
 #include "stdafx.h"
 #include "Windows.h"
+#include "GlobalObjects.h"
 #include "SearchDevice.h"
 
 
 SearchDevice::SearchDevice(std::shared_ptr<QThread> thread)
 {
-	connect(this, SLOT(searchDevices()), &*thread, SIGNAL(started()));
+	connect(
+		&*thread, &QThread::started, 
+		this, &SearchDevice::searchDevices
+	);
 }
 
 
@@ -48,9 +52,9 @@ void SearchDevice::searchDevices() {
 
 					QString str;
 
-					str.append((WCHAR)rPI.szName);
+					str.append(convertToQString(rPI.szName));
 					str.append(" ");
-					str.append((WCHAR)rPI.szFriendly);
+					str.append(convertToQString(rPI.szFriendly));
 
 					readersList.append(str);
 				}
@@ -73,10 +77,22 @@ void SearchDevice::searchDevices() {
 		if (ZR_SetNotification(&h_Notify, &rNS) != S_OK)
 			emit message(QString("SEARCH::Error to ZR_SetNotification: Nothing device will not be added!"));
 
+		std::vector<HANDLE> eventList = { *_globalExit, r_Event };
+
 		while (true) {
-			if (WaitForSingleObject(r_Event, INFINITE)) {
+			auto event = WaitForMultipleObjects(eventList.size(), eventList.data(), FALSE, INFINITE);
+
+			if (event == WAIT_OBJECT_0 + 0)
+				break;
+
+			if (event == WAIT_OBJECT_0 + 1) {
 				ResetEvent(r_Event);
 				CheckNotifyMessage(h_Notify);
+				continue;
+			}
+			else {
+				emit message(QString("SEARCH:: Error of wating object! Restart"));
+				continue;
 			}
 		}
 
@@ -84,6 +100,7 @@ void SearchDevice::searchDevices() {
 	catch (const std::exception& error) {
 		emit message(QString("SEARCH::") + error.what());
 	}
+	ZR_Finalyze();
 }
 
 void SearchDevice::CheckNotifyMessage(HANDLE& h_Notify)
@@ -102,11 +119,13 @@ void SearchDevice::CheckNotifyMessage(HANDLE& h_Notify)
 
 				QString str;
 
-				str.append((WCHAR)pInfo->rPort.szName);
+				str.append(convertToQString(pInfo->rPort.szName));
 				str.append(" ");
-				str.append((WCHAR)pInfo->rPort.szFriendly);
+				str.append(convertToQString(pInfo->rPort.szFriendly));
 
 				readersList.append(str);
+
+				emit message(QString("SEACRH:: Find device: " + convertToQString(pInfo->rPort.szName)));
 			}
 		}
 		break;
@@ -116,13 +135,15 @@ void SearchDevice::CheckNotifyMessage(HANDLE& h_Notify)
 
 			QString str;
 
-			str.append((WCHAR)pInfo->rPort.szName);
+			str.append(convertToQString(pInfo->rPort.szName));
 			str.append(" ");
-			str.append((WCHAR)pInfo->rPort.szFriendly);
+			str.append(convertToQString(pInfo->rPort.szFriendly));
 
 			if (readersList.contains(str)) {
 				readersList.removeOne(str);
 			}
+
+			emit message(QString("SEACRH:: Lost device: " + convertToQString(pInfo->rPort.szName)));
 		}
 		break;
 		}
@@ -134,5 +155,12 @@ void SearchDevice::CheckNotifyMessage(HANDLE& h_Notify)
 	else {
 		emit message(QString("SEARCH::Error to get notification from detector. This is problem, but you can not pay attention."));
 	}
+}
+
+QString SearchDevice::convertToQString(WCHAR *convert)
+{
+	std::wstring temp(convert);
+	std::string str(temp.begin(), temp.end());
+	return QString::fromUtf8(str.c_str());
 }
 

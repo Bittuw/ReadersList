@@ -82,6 +82,12 @@
     <ClCompile Include="OpenConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_OpenConnection.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_OpenConnection.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -91,9 +97,6 @@
       <Filter>Generated Files</Filter>
     </ClInclude>
     <ClInclude Include="GlobalObjects.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -111,6 +114,9 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="CustomLabel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="OpenConnection.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

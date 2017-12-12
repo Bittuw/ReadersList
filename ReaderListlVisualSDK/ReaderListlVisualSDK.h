@@ -9,6 +9,7 @@ class ReaderListlVisualSDK : public QMainWindow
 
 public:
 	ReaderListlVisualSDK(QWidget *parent = Q_NULLPTR);
+	~ReaderListlVisualSDK();
 
 signals:
 	void openConnection(QString);
@@ -19,6 +20,7 @@ public slots :
 	void removeList(); // Удаление из списка
 	void doubleClick(QListWidgetItem*); // Обработка двойного нажатия на список
 	void writeToEvenList(QString);
+	void writeToInputText(QString);
 
 private slots:
 	void on_InputText_doubleclicked();

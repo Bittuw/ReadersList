@@ -11,12 +11,10 @@ signals:
 	void setDeviceList(QStringList);
 	void message(QString);
 
-public slots:
-	void openConnection(QString);
-
 private:
 	void searchDevices();
 	void CheckNotifyMessage(HANDLE&);
+	QString convertToQString(WCHAR*);
 
 	QStringList readersList;
 };

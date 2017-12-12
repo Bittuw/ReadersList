@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <memory>
 #include <set>
+#include <stdio.h>
+#include <tchar.h>
 #include "ZReader.h"
 #include "ZPort.h"
 
