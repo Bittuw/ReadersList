@@ -116,7 +116,7 @@
      <set>Qt::NoTextInteraction</set>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit">
+   <widget class="QPlainTextEdit" name="EventList">
     <property name="geometry">
      <rect>
       <x>290</x>

@@ -26,4 +26,5 @@ private slots:
 private:
 	Ui::ReaderListlVisualSDKClass ui;
 	std::shared_ptr<QThread> t_searhDevice;
+	std::shared_ptr<QThread> t_openConnection;
 };

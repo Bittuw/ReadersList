@@ -9,15 +9,15 @@ public:
 
 signals:
 	void setDeviceList(QStringList);
-	void messageFromReader(QString);
+	void message(QString);
 
 public slots:
 	void openConnection(QString);
 
 private:
 	void searchDevices();
-	
-	std::set<_ZR_RD_INFO> readersList;
-	std::unique_ptr<HANDLE> h_Reader;
+	void CheckNotifyMessage(HANDLE&);
+
+	QStringList readersList;
 };
 
